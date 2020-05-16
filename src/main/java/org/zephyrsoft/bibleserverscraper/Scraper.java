@@ -103,7 +103,7 @@ public class Scraper {
 
 	private void sleepRandomTime() {
 		try {
-			int seconds = random.nextInt(3) + 5;
+			int seconds = random.nextInt(3) + 1;
 			LOG.debug("waiting for {} seconds", seconds);
 			Thread.sleep(seconds * 1000);
 		} catch (InterruptedException e) {

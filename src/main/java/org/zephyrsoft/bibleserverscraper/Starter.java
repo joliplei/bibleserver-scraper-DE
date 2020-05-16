@@ -15,6 +15,7 @@ public class Starter {
 			String mainDirectory = args[0];
 			String rawDirectory = subdir(mainDirectory, "raw");
 			String mySwordDirectory = subdir(mainDirectory, "mysword");
+			String openlpDirectory = subdir(mainDirectory, "openlp");
 			String latexDirectory = subdir(mainDirectory, "latex");
 
 			// fetch the data
@@ -24,6 +25,10 @@ public class Starter {
 			// export bibles in MySword format
 			MySwordExporter mySwordExporter = new MySwordExporter();
 			mySwordExporter.export(rawDirectory, mySwordDirectory);
+			
+			// export bibles in OpenLP format
+			OpenLPExporter openlpExporter = new OpenLPExporter();
+			openlpExporter.export(rawDirectory, openlpDirectory);
 
 			// export LaTeX document for comparing the translations
 			LaTeXExporter latexExporter = new LaTeXExporter();
