@@ -25,5 +25,6 @@ You have to copy the resulting files to your device, either by mailing them to y
 
 In order to use exported bibles in OpenLP you have to copy SQLITE-Files to your OpenLP-Data-Folder.
 
-On Windows-System this folder can be found at C:\Users\USERNAME\AppData\Roaming\openlp\data\bibles
-On Linux-Systems it is /home/<user>/.config/OpenLP/
+On Windows-System this folder can be found at `C:\Users\USERNAME\AppData\Roaming\openlp\data\bibles`
+
+On Linux-Systems it is `/home/<user>/.config/OpenLP/`
