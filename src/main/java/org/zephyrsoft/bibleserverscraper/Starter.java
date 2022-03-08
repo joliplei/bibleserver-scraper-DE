@@ -31,8 +31,8 @@ public class Starter {
 			openlpExporter.export(rawDirectory, openlpDirectory);
 
 			// export LaTeX document for comparing the translations
-			LaTeXExporter latexExporter = new LaTeXExporter();
-			latexExporter.export(rawDirectory, latexDirectory);
+			//LaTeXExporter latexExporter = new LaTeXExporter();
+			//latexExporter.export(rawDirectory, latexDirectory);
 		}
 	}
 
