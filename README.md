@@ -1,10 +1,8 @@
 # bibleserver-scraper
 
-This tool can package content from bibleserver.com nicely:
-1. as [MySword Bible](https://www.mysword.info) modules
-2. as side-by-side, verse-by-verse translation comparison
-
-The latter comes with a bonus feature you can't buy in any print bible (or at least I couldn't find one): no headings! Very useful if you want to read the bible without being influenced beforehand about what to expect.
+This tool can package all German bibles from bibleserver.com nicely:
+1. as MYBIBLE-Files for [MySword Bible](https://www.mysword.info)
+2. as SQLITE-File for [OpenLP Presenter Software](https://openlp.org/)
 
 **Please respect the copyright and don't publish bible texts anywhere without consent of the publishers!**
 
@@ -12,10 +10,10 @@ The latter comes with a bonus feature you can't buy in any print bible (or at le
 
 Start the released JAR using Java 11 or above with an (empty) directory as parameter, e.g.
 
-`java -jar bibleserver-scraper-1.0.0-SNAPSHOT.jar /home/username/bibles`
+`java -jar bibleserver-scraper-1.0.0-SNAPSHOT.jar PATH/TO/TARGET/DIRECTORY`
 
-It will show you on the standard output what it does. If all goes well, it will create five MySword bible modules
-(ELB, LUT, SLT, NLB and KJV) and a LaTeX source file for the translation comparison (more below).
+It will show you on the standard output what it does. If all goes well, it will create nine German bible modules
+(ELB, EU, GNB, HFA, LUT, NEÜ, NLB, SLT, and ZB) for MySword (filetype: .mybible) and OpenLP (.sqlite).
 
 ## MySword Bible modules
 
@@ -23,10 +21,9 @@ You have to copy the resulting files to your device, either by mailing them to y
 
 `adb push *.mybible /storage/emulated/0/mysword/bibles`
 
-## side-by-side, verse-by-verse translation comparison
+## OpenLP Bible modules
 
-The created file has to be compiled to a PDF using [LaTeX](https://www.latex-project.org).
-Please use a LaTeX distribution of your choice which supports these packages (you may have to install them additionally):
-inputenc, fontenc, geometry, setspace, graphicx, hyperref, tabu, longtable
+In order to use exported bibles in OpenLP you have to copy SQLITE-Files to your OpenLP-Data-Folder.
 
-Compilation (e.g. with `pdflatex side-by-side.tex`) has to happen **twice** for the table of contents to have the right page numbers.
+On Windows-System this folder can be found at C:\Users\USERNAME\AppData\Roaming\openlp\data\bibles
+On Linux-Systems it is /home/<user>/.config/OpenLP/
