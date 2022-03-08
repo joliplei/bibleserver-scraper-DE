@@ -1,4 +1,4 @@
-# bibleserver-scraper
+# bibleserver-scraper-DE
 
 This tool can package all German bibles from bibleserver.com nicely:
 1. as MYBIBLE-Files for [MySword Bible](https://www.mysword.info)
