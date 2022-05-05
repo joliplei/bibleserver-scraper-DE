@@ -6,12 +6,14 @@ public class BookChapter {
 	private int chapter;
 	private String nameGerman;
 	private String nameEnglish;
+	private String nameSpanish;
 
-	public BookChapter(Book book, int chapter, String nameGerman, String nameEnglish) {
+	public BookChapter(Book book, int chapter, String nameGerman, String nameEnglish, String nameSpanish) {
 		this.book = book;
 		this.chapter = chapter;
 		this.nameGerman = nameGerman;
 		this.nameEnglish = nameEnglish;
+		this.nameSpanish = nameSpanish;
 	}
 
 	public Book getBook() {
@@ -34,6 +36,10 @@ public class BookChapter {
 
 	public String getNameEnglish() {
 		return nameEnglish;
+	}
+	
+	public String getNameSpanish() {
+		return nameSpanish;
 	}
 
 }
