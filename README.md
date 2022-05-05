@@ -6,7 +6,7 @@ This tool can package all German bibles from bibleserver.com nicely:
 
 **Please respect the copyright and don't publish bible texts anywhere without consent of the publishers!**
 
-Support for English and Spanish translations is included, but disabled in the released JAR file. If needed, this functionality must be activated in the source code and a new JAR file manually compiled.
+Support for English and Spanish translations is included, but disabled in the released JAR file. If needed, this functionality must be activated in the source code and a new JAR file compiled manually.
 
 ## Usage
 
