@@ -13,6 +13,7 @@ public enum Translation {
 	ZB("ZB", "Zürcher Bibel", BookChapter::getNameGerman),
 	GNB("GNB", "Gute Nachricht Bibel", BookChapter::getNameGerman),
 	EU("EU", "Einheitsübersetzung", BookChapter::getNameGerman),
+	MENG("MENG", "Menge Bibel", BookChapter::getNameGerman),
 	NLB("NLB", "Neues Leben. Die Bibel", BookChapter::getNameGerman),
 	NEÜ("NEÜ", "Neue evangelistische Übersetzung", BookChapter::getNameGerman);
 	// ESV("ESV", "English Standard Version", BookChapter::getNameEnglish),
