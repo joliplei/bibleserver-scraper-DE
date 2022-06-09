@@ -14,8 +14,8 @@ Start the released JAR using Java 11 or above with an (empty) directory as param
 
 `java -jar bibleserver-scraper-DE-1.0.0.jar PATH/TO/TARGET/DIRECTORY`
 
-It will show you on the standard output what it does. If all goes well, it will create nine German bible modules
-(ELB, EU, GNB, HFA, LUT, NEÜ, NLB, SLT, and ZB) for MySword (.mybible) and OpenLP (.sqlite).
+It will show you on the standard output what it does. If all goes well, it will create ten German bible modules
+(ELB, EU, GNB, HFA, LUT, MENG, NEÜ, NLB, SLT, and ZB) for MySword (.mybible) and OpenLP (.sqlite).
 
 ## MySword Bible modules
 
