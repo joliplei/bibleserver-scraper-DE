@@ -64,7 +64,7 @@ public class Scraper {
 			try {
 				LOG.debug("fetching {} in {}", bookChapterName, translationAbbreviation);
 				String searchUrl = "https://www.die-bibel.de/bibel/" + translation.getAbbreviation() + "/"
-						+ bookChapter.getBook().getNameForUrl() + bookChapter.getChapter();
+						+ bookChapter.getBook().getNameForUrl() + "." + bookChapter.getChapter();
 				Page page = client.getPage(searchUrl);
 
 				if (page.isHtmlPage()) {
