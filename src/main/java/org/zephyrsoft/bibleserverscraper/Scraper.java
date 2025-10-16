@@ -18,6 +18,7 @@ import org.zephyrsoft.bibleserverscraper.model.BookChapter;
 import org.zephyrsoft.bibleserverscraper.model.ChapterScrapeResult;
 import org.zephyrsoft.bibleserverscraper.model.Translation;
 
+import org.htmlunit.BrowserVersion;
 import org.htmlunit.Page;
 import org.htmlunit.WebClient;
 import org.htmlunit.html.DomNode;
@@ -29,7 +30,7 @@ public class Scraper {
 	private Random random = new Random();
 
 	public void scrape(String directory) {
-		try (WebClient client = new WebClient()) {
+		try (WebClient client = new WebClient(BrowserVersion.CHROME)) {
 			client.getOptions().setCssEnabled(false);
 			client.getOptions().setJavaScriptEnabled(true);
 			client.getOptions().setHistoryPageCacheLimit(1);
