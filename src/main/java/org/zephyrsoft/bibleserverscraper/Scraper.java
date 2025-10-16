@@ -53,12 +53,14 @@ public class Scraper {
 		}
 	}
 
-	private ChapterScrapeResult scrapeChapter(String directory, WebClient client, Translation translation, BookChapter bookChapter) {
+	private ChapterScrapeResult scrapeChapter(String directory, WebClient client, Translation translation,
+			BookChapter bookChapter) {
 		String translationAbbreviation = translation.getAbbreviation();
 		String bookChapterName = bookChapter.getPrintNameGerman();
 
-		File targetFile = new File(directory + File.separator + translationAbbreviation + "-" +
-			bookChapter.getBook().getOrdinal() + "-" + bookChapter.getNameGerman() + ".txt"); // files always named in German
+		File targetFile = new File(directory + File.separator + translationAbbreviation + "-"
+				+ bookChapter.getBook().getOrdinal() + "-" + bookChapter.getNameGerman() + ".txt"); // files always named
+																									// in German
 		if (targetFile.exists()) {
 			LOG.debug("not fetching {} in {}, file {} exists", bookChapterName, translationAbbreviation, targetFile);
 			return new ChapterScrapeResult(false, true);
@@ -69,17 +71,16 @@ public class Scraper {
 						+ bookChapter.getBook().getNameForUrl() + "." + bookChapter.getChapter();
 				HtmlPage page = client.getPage(searchUrl);
 
+				// Wait for the content to load
 				for (int i = 0; i < 30; i++) {
 					if (page.querySelector("div.text-mass") != null) {
 						break;
 					}
-					synchronized (page) {
-						page.wait(1000);
-					}
+					Thread.sleep(1000);
 				}
 
 				if (page.isHtmlPage()) {
-					handleChapter(targetFile, (HtmlPage)page);
+					handleChapter(targetFile, (HtmlPage) page);
 					return new ChapterScrapeResult(true, true);
 				} else {
 					LOG.warn("result was not HTML: {}", page.getWebResponse().getContentAsString(StandardCharsets.UTF_8));
