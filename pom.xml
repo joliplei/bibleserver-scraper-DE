@@ -31,9 +31,9 @@
 		    <version>1.7.28</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sourceforge.htmlunit</groupId>
+			<groupId>org.htmlunit</groupId>
 			<artifactId>htmlunit</artifactId>
-			<version>2.36.0</version>
+			<version>4.17.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>commons-logging</groupId>
