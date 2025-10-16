@@ -34,7 +34,7 @@ public class Scraper {
 			client.getOptions().setCssEnabled(false);
 			client.getOptions().setJavaScriptEnabled(true);
 			client.getOptions().setHistoryPageCacheLimit(1);
-			client.waitForBackgroundJavaScript(10000);
+			client.getOptions().setThrowExceptionOnScriptError(false);
 
 			AtomicBoolean allScrapedSuccessfully = new AtomicBoolean(true);
 			do {
@@ -67,7 +67,16 @@ public class Scraper {
 				LOG.debug("fetching {} in {}", bookChapterName, translationAbbreviation);
 				String searchUrl = "https://www.die-bibel.de/bibel/" + translation.getAbbreviation() + "/"
 						+ bookChapter.getBook().getNameForUrl() + "." + bookChapter.getChapter();
-				Page page = client.getPage(searchUrl);
+				HtmlPage page = client.getPage(searchUrl);
+
+				for (int i = 0; i < 30; i++) {
+					if (page.querySelector("div.text-mass") != null) {
+						break;
+					}
+					synchronized (page) {
+						page.wait(1000);
+					}
+				}
 
 				if (page.isHtmlPage()) {
 					handleChapter(targetFile, (HtmlPage)page);
