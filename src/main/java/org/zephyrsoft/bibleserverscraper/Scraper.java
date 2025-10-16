@@ -71,14 +71,6 @@ public class Scraper {
 						+ bookChapter.getBook().getNameForUrl() + "." + bookChapter.getChapter();
 				HtmlPage page = client.getPage(searchUrl);
 
-				// Wait for the content to load
-				for (int i = 0; i < 30; i++) {
-					if (page.querySelector("div.text-mass") != null) {
-						break;
-					}
-					Thread.sleep(1000);
-				}
-
 				if (page.isHtmlPage()) {
 					handleChapter(targetFile, (HtmlPage) page);
 					return new ChapterScrapeResult(true, true);
@@ -94,16 +86,16 @@ public class Scraper {
 	}
 
 	private void handleChapter(File targetFile, HtmlPage page) throws IOException {
-		DomNode content = page.querySelector("div.text-mass");
-		if (content == null) {
+		List<DomNode> verses = page.querySelectorAll("span.verse");
+		if (verses.isEmpty()) {
 			throw new IllegalStateException("no content found");
 		} else {
-			String text = content.asNormalizedText();
-			List<String> verses = Arrays.stream(text.split("\\[[0-9]+\\]"))
+			List<String> versesText = verses.stream()
+				.map(DomNode::asNormalizedText)
 				.map(String::trim)
 				.filter(s -> !s.isEmpty())
 				.collect(Collectors.toList());
-			Files.write(targetFile.toPath(), verses, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
+			Files.write(targetFile.toPath(), versesText, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
 		}
 	}
 
