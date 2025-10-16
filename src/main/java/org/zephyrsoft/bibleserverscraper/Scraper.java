@@ -1,17 +1,15 @@
 package org.zephyrsoft.bibleserverscraper;
 
-import static java.util.stream.Collectors.joining;
-
 import java.io.File;
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +53,7 @@ public class Scraper {
 
 	private ChapterScrapeResult scrapeChapter(String directory, WebClient client, Translation translation, BookChapter bookChapter) {
 		String translationAbbreviation = translation.getAbbreviation();
-		String bookChapterName = translation.nameOf(bookChapter);
+		String bookChapterName = bookChapter.getPrintNameGerman();
 
 		File targetFile = new File(directory + File.separator + translationAbbreviation + "-" +
 			bookChapter.getBook().getOrdinal() + "-" + bookChapter.getNameGerman() + ".txt"); // files always named in German
@@ -65,8 +63,8 @@ public class Scraper {
 		} else {
 			try {
 				LOG.debug("fetching {} in {}", bookChapterName, translationAbbreviation);
-				String searchUrl = "https://www.bibleserver.com/text/" + URLEncoder.encode(translationAbbreviation, "UTF-8")
-					+ "/" + URLEncoder.encode(bookChapterName, "UTF-8");
+				String searchUrl = "https://www.die-bibel.de/bibel/" + translation.getAbbreviation() + "/"
+						+ bookChapter.getBook().getNameForUrl() + bookChapter.getChapter();
 				Page page = client.getPage(searchUrl);
 
 				if (page.isHtmlPage()) {
@@ -84,20 +82,16 @@ public class Scraper {
 	}
 
 	private void handleChapter(File targetFile, HtmlPage page) throws IOException {
-		List<DomNode> verses = page.<DomNode>getByXPath("//*[contains(@class,'chapter')]//*[contains(@class,'verse-content--hover')]");
-		if (verses.isEmpty()) {
-			throw new IllegalStateException("no verses found");
+		DomNode content = page.querySelector("div.text-mass");
+		if (content == null) {
+			throw new IllegalStateException("no content found");
 		} else {
-			List<String> versesText = new LinkedList<>();
-			for (DomNode verse : verses) {
-				String verseString = verse.<DomNode>getByXPath("./text()").stream()
-					.map(node -> node.asText())
-					.collect(joining(" "))
-					.replaceAll(" {2,}", " ")
-					.replaceAll("(\\w) ([\\.!\\?,;:])", "$1$2");
-				versesText.add(verseString);
-			}
-			Files.write(targetFile.toPath(), versesText, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
+			String text = content.asText();
+			List<String> verses = Arrays.stream(text.split("\\[[0-9]+\\]"))
+				.map(String::trim)
+				.filter(s -> !s.isEmpty())
+				.collect(Collectors.toList());
+			Files.write(targetFile.toPath(), verses, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
 		}
 	}
 

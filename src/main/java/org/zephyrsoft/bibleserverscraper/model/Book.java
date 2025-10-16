@@ -97,6 +97,10 @@ public enum Book {
 			.replaceAll("^([1-5]\\.)([A-Z])", "$1 $2");
 	}
 
+	public String getNameForUrl() {
+		return getNameGerman().replaceAll("\\.", "").toUpperCase();
+	}
+
 	public String getOrdinal() {
 		return name().replace("_", "");
 	}
