@@ -31,8 +31,9 @@ public class Scraper {
 	public void scrape(String directory) {
 		try (WebClient client = new WebClient()) {
 			client.getOptions().setCssEnabled(false);
-			client.getOptions().setJavaScriptEnabled(false);
+			client.getOptions().setJavaScriptEnabled(true);
 			client.getOptions().setHistoryPageCacheLimit(1);
+			client.waitForBackgroundJavaScript(10000);
 
 			AtomicBoolean allScrapedSuccessfully = new AtomicBoolean(true);
 			do {
