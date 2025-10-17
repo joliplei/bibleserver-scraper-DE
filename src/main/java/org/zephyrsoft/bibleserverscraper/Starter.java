@@ -25,7 +25,7 @@ public class Starter {
 			// export bibles in MySword format
 			MySwordExporter mySwordExporter = new MySwordExporter();
 			mySwordExporter.export(rawDirectory, mySwordDirectory);
-			
+
 			// export bibles in OpenLP format
 			OpenLPExporter openlpExporter = new OpenLPExporter();
 			openlpExporter.export(rawDirectory, openlpDirectory);
