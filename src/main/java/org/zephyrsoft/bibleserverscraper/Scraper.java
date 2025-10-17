@@ -94,7 +94,6 @@ public class Scraper {
 				.map(verse -> {
 					String text = verse.getTextContent();
 					text = text.replaceAll("\\s*\\n\\s*", " ").trim();
-					text = text.replaceAll("([,.:;!?])\\s*\\n\\s*", "$1 ");
 					text = text.replaceAll(" +", " ");
 					text = text.replaceAll(" ([,.:;!?])", "$1");
 					return text;
