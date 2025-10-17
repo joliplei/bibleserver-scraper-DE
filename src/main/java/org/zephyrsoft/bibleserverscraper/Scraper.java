@@ -92,7 +92,10 @@ public class Scraper {
 		} else {
 			List<String> versesText = verses.stream()
 				.map(DomNode::asNormalizedText)
-				.map(s -> s.replaceAll("\\s*\\n\\s*", " ").trim())
+				.map(s -> s.replaceAll("\\s*\\n\\s*", " ") // replace newlines with spaces
+					.replaceAll(" +", " ") // collapse multiple spaces
+					.replaceAll(" ([,.:;!?])", "$1") // remove space before punctuation
+					.trim())
 				.filter(s -> !s.isEmpty())
 				.collect(Collectors.toList());
 			Files.write(targetFile.toPath(), versesText, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
