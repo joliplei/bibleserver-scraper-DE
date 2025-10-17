@@ -1,8 +1,10 @@
 # die-bibel-scraper-DE
 
-This tool can package all German bibles from bibleserver.com nicely:
+This tool can package all German bibles from die-bibel.de nicely:
 1. as MYBIBLE-Files for [MySword Bible](https://www.mysword.info)
 2. as SQLITE-File for [OpenLP Presenter Software](https://openlp.org/)
+
+You can use the BibleMultiConverter (https://github.com/schierlm/BibleMultiConverter) to convert the MySword files to other formats like Zefania XML.
 
 **Please respect the copyright and don't publish bible texts anywhere without consent of the publishers!**
 
