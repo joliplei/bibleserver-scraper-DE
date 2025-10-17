@@ -100,6 +100,7 @@ public class Scraper {
 				if (newVerse && currentVerse.length() > 0) {
 					String text = currentVerse.toString();
 					text = text.replaceAll("\\s+", " ").replaceAll(" ([,.:;!?])", "$1").trim();
+					text = text.replaceAll("^\\d+\\s*", "");
 					if (!text.isEmpty()) {
 						verses.add(text);
 					}
@@ -112,6 +113,7 @@ public class Scraper {
 			if (currentVerse.length() > 0) {
 				String text = currentVerse.toString();
 				text = text.replaceAll("\\s+", " ").replaceAll(" ([,.:;!?])", "$1").trim();
+				text = text.replaceAll("^\\d+\\s*", "");
 				if (!text.isEmpty()) {
 					verses.add(text);
 				}
