@@ -19,6 +19,8 @@ Start the released JAR using Java 11 or above with an (empty) directory as param
 It will show you on the standard output what it does. If all goes well, it will create 3 German bible modules
 (BB, LU84, NGUE [unvollständig]) for MySword (.mybible) and OpenLP (.sqlite).
 
+Before using it, you must install Java (e.g. Temurin https://adoptium.net/de).
+
 ## MySword Bible modules
 
 You have to copy the resulting files to your device, either by mailing them to yourself or via Android Debug Bridge:
