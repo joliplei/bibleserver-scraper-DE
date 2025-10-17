@@ -93,11 +93,11 @@ public class Scraper {
 			List<String> versesText = verses.stream()
 				.map(verse -> {
 					String text = verse.getTextContent();
-					text = text.replaceAll("\\s*\\n\\s*", " ").trim();
-					text = text.replaceAll("([,.:;!?])\\s*\\n\\s*", "$1 ");
+					// Alle Umbrüche, Steuerzeichen und überflüssige Leerzeichen entfernen
+					text = text.replaceAll("\\r?\\n|\\u2028|\\u2029|\\u0085", " ");
 					text = text.replaceAll(" +", " ");
 					text = text.replaceAll(" ([,.:;!?])", "$1");
-					return text;
+					return text.trim();
 				})
 				.filter(s -> !s.isEmpty())
 				.collect(Collectors.toList());
