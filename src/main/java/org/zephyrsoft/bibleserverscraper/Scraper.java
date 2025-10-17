@@ -88,7 +88,7 @@ public class Scraper {
 	}
 
 	private void handleChapter(File targetFile, HtmlPage page) throws IOException {
-		List<DomNode> paragraphs = page.querySelectorAll("p.m");
+		List<DomNode> paragraphs = page.querySelectorAll("ibep-render-bible-content p");
 		if (paragraphs.isEmpty()) {
 			throw new IllegalStateException("no content found");
 		} else {
