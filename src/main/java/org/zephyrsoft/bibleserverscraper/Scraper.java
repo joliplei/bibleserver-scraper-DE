@@ -86,7 +86,7 @@ public class Scraper {
 	}
 
 	private void handleChapter(File targetFile, HtmlPage page) throws IOException {
-		List<DomNode> verses = page.querySelectorAll("span.verse");
+		List<DomNode> verses = page.querySelectorAll("ibep-verse-text-renderer");
 		if (verses.isEmpty()) {
 			throw new IllegalStateException("no content found");
 		} else {
