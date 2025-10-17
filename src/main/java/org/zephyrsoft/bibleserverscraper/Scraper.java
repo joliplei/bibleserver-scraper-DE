@@ -22,6 +22,7 @@ import org.htmlunit.BrowserVersion;
 import org.htmlunit.Page;
 import org.htmlunit.WebClient;
 import org.htmlunit.html.DomNode;
+import org.htmlunit.html.DomText;
 import org.htmlunit.html.HtmlPage;
 
 public class Scraper {
@@ -92,7 +93,14 @@ public class Scraper {
 		} else {
 			List<String> versesText = verses.stream()
 				.map(verse -> {
-					String text = verse.getTextContent();
+					// Alle Kind-Elemente und Text-Nodes zusammensetzen
+					StringBuilder sb = new StringBuilder();
+					for (DomNode child : verse.getDescendants()) {
+						if (child instanceof DomText) {
+							sb.append(child.getTextContent()).append(" ");
+						}
+					}
+					String text = sb.toString();
 					// Alle Umbrüche, Steuerzeichen und überflüssige Leerzeichen entfernen
 					text = text.replaceAll("\\r?\\n|\\u2028|\\u2029|\\u0085", " ");
 					text = text.replaceAll(" +", " ");
