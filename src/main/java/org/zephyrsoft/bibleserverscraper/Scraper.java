@@ -93,10 +93,11 @@ public class Scraper {
 			List<String> versesText = verses.stream()
 				.map(verse -> {
 					String text = verse.getTextContent();
-					return text.replaceAll("\\s*\\n\\s*", " ") // replace newlines with spaces
-						.replaceAll(" +", " ") // collapse multiple spaces
-						.replaceAll(" ([,.:;!?])", "$1") // remove space before punctuation
-						.trim();
+					text = text.replaceAll("(?i)<br\\s*/?>", " ");
+					text = text.replaceAll("\\r?\\n|\\u2028|\\u2029|\\u0085", " ");
+					text = text.replaceAll(" +", " "); // collapse multiple spaces
+					text = text.replaceAll(" ([,.:;!?])", "$1"); // remove space before punctuation
+					return text.trim();
 				})
 				.filter(s -> !s.isEmpty())
 				.collect(Collectors.toList());
