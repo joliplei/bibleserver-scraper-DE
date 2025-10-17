@@ -91,11 +91,13 @@ public class Scraper {
 			throw new IllegalStateException("no content found");
 		} else {
 			List<String> versesText = verses.stream()
-				.map(DomNode::asNormalizedText)
-				.map(s -> s.replaceAll("\\s*\\n\\s*", " ") // replace newlines with spaces
-					.replaceAll(" +", " ") // collapse multiple spaces
-					.replaceAll(" ([,.:;!?])", "$1") // remove space before punctuation
-					.trim())
+				.map(verse -> {
+					String text = verse.getTextContent();
+					return text.replaceAll("\\s*\\n\\s*", " ") // replace newlines with spaces
+						.replaceAll(" +", " ") // collapse multiple spaces
+						.replaceAll(" ([,.:;!?])", "$1") // remove space before punctuation
+						.trim();
+				})
 				.filter(s -> !s.isEmpty())
 				.collect(Collectors.toList());
 			Files.write(targetFile.toPath(), versesText, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
