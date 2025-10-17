@@ -1,4 +1,4 @@
-# bibleserver-scraper-DE
+# die-bibel-scraper-DE
 
 This tool can package all German bibles from bibleserver.com nicely:
 1. as MYBIBLE-Files for [MySword Bible](https://www.mysword.info)
@@ -12,10 +12,10 @@ Support for English and Spanish translations is included, but disabled in the re
 
 Start the released JAR using Java 11 or above with an (empty) directory as parameter, e.g.
 
-`java -jar bibleserver-scraper-DE-1.0.0.jar PATH/TO/TARGET/DIRECTORY`
+`java -jar bibleserver-scraper-DE-1.1.0-SNAPSHOT.jar PATH/TO/TARGET/DIRECTORY`
 
-It will show you on the standard output what it does. If all goes well, it will create ten German bible modules
-(ELB, EU, GNB, HFA, LUT, MENG, NEÜ, NLB, SLT, and ZB) for MySword (.mybible) and OpenLP (.sqlite).
+It will show you on the standard output what it does. If all goes well, it will create 3 German bible modules
+(BB, LU84, NGUE [unvollständig]) for MySword (.mybible) and OpenLP (.sqlite).
 
 ## MySword Bible modules
 
