@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -87,29 +88,36 @@ public class Scraper {
 	}
 
 	private void handleChapter(File targetFile, HtmlPage page) throws IOException {
-		List<DomNode> verses = page.querySelectorAll("ibep-verse-text-renderer");
-		if (verses.isEmpty()) {
+		List<DomNode> paragraphs = page.querySelectorAll("p.m");
+		if (paragraphs.isEmpty()) {
 			throw new IllegalStateException("no content found");
 		} else {
-			List<String> versesText = verses.stream()
-				.map(verse -> {
-					// Alle Kind-Elemente und Text-Nodes zusammensetzen
-					StringBuilder sb = new StringBuilder();
-					for (DomNode child : verse.getDescendants()) {
-						if (child instanceof DomText) {
-							sb.append(child.getTextContent()).append(" ");
-						}
+			List<String> verses = new ArrayList<>();
+			StringBuilder currentVerse = new StringBuilder();
+
+			for (DomNode p : paragraphs) {
+				boolean newVerse = !p.querySelectorAll("bible-v > sub.v").isEmpty();
+				if (newVerse && currentVerse.length() > 0) {
+					String text = currentVerse.toString();
+					text = text.replaceAll("\\s+", " ").replaceAll(" ([,.:;!?])", "$1").trim();
+					if (!text.isEmpty()) {
+						verses.add(text);
 					}
-					String text = sb.toString();
-					// Alle Umbrüche, Steuerzeichen und überflüssige Leerzeichen entfernen
-					text = text.replaceAll("\\r?\\n|\\u2028|\\u2029|\\u0085", " ");
-					text = text.replaceAll(" +", " ");
-					text = text.replaceAll(" ([,.:;!?])", "$1");
-					return text.trim();
-				})
-				.filter(s -> !s.isEmpty())
-				.collect(Collectors.toList());
-			Files.write(targetFile.toPath(), versesText, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
+					currentVerse.setLength(0);
+				}
+				currentVerse.append(p.getTextContent()).append(" ");
+			}
+
+			// Add the last verse
+			if (currentVerse.length() > 0) {
+				String text = currentVerse.toString();
+				text = text.replaceAll("\\s+", " ").replaceAll(" ([,.:;!?])", "$1").trim();
+				if (!text.isEmpty()) {
+					verses.add(text);
+				}
+			}
+
+			Files.write(targetFile.toPath(), verses, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
 		}
 	}
 
