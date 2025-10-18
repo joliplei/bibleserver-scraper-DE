@@ -88,39 +88,39 @@ public class Scraper {
 	}
 
 	private void handleChapter(File targetFile, HtmlPage page) throws IOException {
-		List<DomNode> paragraphs = page.querySelectorAll("p.m");
+		// Common selectors for bible verses on die-bibel.de
+		List<DomNode> paragraphs = page.querySelectorAll("p.m, div.BTT, p.BTT, div.text");
 		if (paragraphs.isEmpty()) {
-			throw new IllegalStateException("no content found");
-		} else {
-			List<String> verses = new ArrayList<>();
-			StringBuilder currentVerse = new StringBuilder();
-
-			for (DomNode p : paragraphs) {
-				boolean newVerse = !p.querySelectorAll("bible-v > sub.v").isEmpty();
-				if (newVerse && currentVerse.length() > 0) {
-					String text = currentVerse.toString();
-					text = text.replaceAll("\\s+", " ").replaceAll(" ([,.:;!?])", "$1").trim();
-					text = text.replaceAll("^\\d+\\s*", "");
-					if (!text.isEmpty()) {
-						verses.add(text);
-					}
-					currentVerse.setLength(0);
-				}
-				currentVerse.append(p.getTextContent()).append(" ");
-			}
-
-			// Add the last verse
-			if (currentVerse.length() > 0) {
-				String text = currentVerse.toString();
-				text = text.replaceAll("\\s+", " ").replaceAll(" ([,.:;!?])", "$1").trim();
-				text = text.replaceAll("^\\d+\\s*", "");
-				if (!text.isEmpty()) {
-					verses.add(text);
-				}
-			}
-
-			Files.write(targetFile.toPath(), verses, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
+			throw new IllegalStateException("no content found in page " + page.getUrl());
 		}
+
+		List<String> verses = new ArrayList<>();
+		for (DomNode p : paragraphs) {
+			String pText = p.getTextContent().replace('\u00A0', ' ').trim();
+			if (pText.isEmpty()) {
+				continue;
+			}
+
+			// Verses are split by numbers in brackets, e.g. [1], [2], [3]...
+			// This is a robust way to handle different formatting across translations.
+			String[] verseParts = pText.split("\\s*\\[\\d+\\]\\s*");
+
+			for(String verse : verseParts) {
+				// Clean up verse text and remove extra whitespace.
+				String cleanedVerse = verse.replaceAll("\\s+", " ").replaceAll(" ([,.:;!?])", "$1").trim();
+				if(!cleanedVerse.isEmpty()) {
+					verses.add(cleanedVerse);
+				}
+			}
+		}
+
+		if (verses.isEmpty()) {
+			// This can happen for pages that contain text but no verse markers (e.g. introductions).
+			// We log this situation but do not fail the entire scrape.
+			LOG.warn("No verses found on page {}. The page might contain introductory text without verse markers.", page.getUrl());
+		}
+
+		Files.write(targetFile.toPath(), verses, StandardCharsets.UTF_8, StandardOpenOption.CREATE_NEW);
 	}
 
 	private void sleepRandomTime() {
